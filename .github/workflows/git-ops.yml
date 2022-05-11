@@ -1,0 +1,40 @@
+name: Deploy to GitOps
+
+on:
+  workflow_call:
+    inputs:
+      dev_env:
+        required: true
+        type: string
+      branch-name:
+        required: true
+        type: string
+    secrets:
+      github-token:
+        required: true
+      ecr_repository:
+        required: true
+
+jobs:
+  update-gitops:
+    name: Gitops
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.dev_env }}
+
+    steps:
+      - name: Checkout gitops repo
+        uses: actions/checkout@v3
+        with:
+          repository: NetaMx/gitops
+          token: ${{ secrets.github-token }}
+
+      - name: Update Version
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          ls -l
+          version=$(cat ./backend/charts/${{ secrets.ecr_repository }}/values.yaml | grep tag: | awk '{print $2}')
+          sed -i "s/$version/$IMAGE_TAG/" ./backend/charts/${{ secrets.ecr_repository }}/values.yaml
+          git add .
+          git diff-index --quiet HEAD || sudo git commit -m "${{ secrets.ecr_repository }} updated"
+          git push origin HEAD:${{ inputs.branch-name }}
