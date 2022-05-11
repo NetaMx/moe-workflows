@@ -1,0 +1,13 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    uses: NetaMx/moe-workflows/.github/workflows/release.yml@main
+    secrets:
+      github-token: ${{ secrets.GH_PAT }}

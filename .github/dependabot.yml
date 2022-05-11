@@ -1,0 +1,37 @@
+# dependabot.yml file config
+# For security and normal updates on dependencies
+---
+version: 2
+updates:
+# Target default branch
+  # Maintain dependencies for js with npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Type: Maintenance"
+
+  # Maintain dependencies for docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Type: Maintenance"
+
+  # Maintain dependencies for github actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Type: Maintenance"
+
+  # Maintain dependencies for python with pip
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Type: Maintenance"
