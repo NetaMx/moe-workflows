@@ -1,0 +1,25 @@
+name: Slack Notification
+
+on:
+  workflow_call:
+    secrets:
+      slack_webhook:
+        required: true
+
+jobs:
+  slackNotification:
+    name: Message
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: prod-deployments
+          SLACK_USERNAME: neta-bot
+          SLACK_ICON_EMOJI: ":cool-doge:"
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: "Success deploy :rocket:"
+          SLACK_TITLE: status
+          SLACK_WEBHOOK: ${{ secrets.slack_webhook }}

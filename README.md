@@ -15,6 +15,52 @@
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### usage
+
+```yaml
+name: "Deploy :rocket:"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [develop]
+
+jobs:
+  release:
+    uses: NetaMx/moe-workflows/.github/workflows/release.yml@main
+    secrets:
+      github-token: ${{ secrets.DEV_GITHUB_TOKEN }}
+
+  build-image-dev:
+    if: github.event.ref == 'refs/heads/develop'
+    needs: [release]
+    uses: NetaMx/moe-workflows/.github/workflows/build-image.yml@main
+    with:
+      dev_env: develop
+    secrets:
+      ecr_repository: ${{ secrets.ECR_REPOSITORY }}
+      region: ${{ secrets.DEV_AWS_REGION }}
+      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+
+  deploy-argocd-dev:
+    if: github.event.ref == 'refs/heads/develop'
+    needs: [build-image-dev]
+    uses: NetaMx/moe-workflows/.github/workflows/git-ops.yml@main
+    with:
+      dev_env: develop
+      branch-name: main
+    secrets:
+      github-token: ${{ secrets.DEV_GITHUB_TOKEN }}
+      ecr_repository: ${{ secrets.ECR_REPOSITORY }}
+
+  slack-message:
+    if: ${{ always() }}
+    needs: [deploy-argocd-dev]
+    uses: NetaMx/moe-workflows/.github/workflows/slack.yml@main
+    secrets:
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+```
 
 <!-- CONTACT -->
 ## Contact
