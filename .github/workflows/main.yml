@@ -10,4 +10,4 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: NetaMx/moe-workflows/.github/workflows/release.yml@main
     secrets:
-      github-token: ${{ secrets.GH_PAT }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
