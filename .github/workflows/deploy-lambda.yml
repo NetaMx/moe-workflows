@@ -1,0 +1,51 @@
+name: Deploy serverless
+
+on:
+  workflow_call:
+    inputs:
+      env_stage:
+        required: true
+        type: string
+      env_plugin:
+        required: true
+        type: string
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      aws_region:
+        required: true
+
+jobs:
+  deploy-serverless:
+    name: ${{ inputs.env_stage }}
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.env_stage }}
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: serverless deploy
+        uses: serverless/github-action@v2
+        with:
+          args: -c "${{ inputs.env_plugin }} && deploy --stage=${{ inputs.env_stage }} --region=${{ inputs.aws_region }} --verbose"
+          entrypoint: /bin/bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+          SLS_DEBUG: 1
