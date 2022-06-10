@@ -10,11 +10,12 @@ jobs:
   release-on-push:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.github-token }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - id: release
         uses: rymndhng/release-on-push-action@master
         with:
+          max_commits: 5000
           bump_version_scheme: minor
           use_github_release_notes: true
           release_name: "V<RELEASE_VERSION>"
