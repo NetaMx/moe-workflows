@@ -18,6 +18,7 @@ jobs:
           bump_version_scheme: minor
           use_github_release_notes: true
           release_name: "V<RELEASE_VERSION>"
+          max_commits: 1000
 
       - name: Check Output Parameters
         run: |
