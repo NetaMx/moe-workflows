@@ -9,6 +9,9 @@ on:
       env_plugin:
         required: true
         type: string
+      env_plugin_two:
+        required: false
+        type: string
     secrets:
       aws_access_key_id:
         required: true
@@ -36,7 +39,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: install plugins
-        run: npm i ${{ inputs.env_plugin }}
+        run: npm i ${{ inputs.env_plugin }} ${{ inputs.env_plugin_two }}
 
       - name: serverless deploy
         uses: serverless/github-action@v3
