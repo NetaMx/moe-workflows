@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/NetaMx/moe-workflows">
-    <img src="./Logo_Neta_Close.png" alt="Logo" width="150" height="100">
+    <img src="./Neta.png" alt="Logo" width="150" height="100">
   </a>
 
   <h3 align="center">Neta Workflows Configuration</h3>
@@ -18,7 +18,7 @@
 ### usage
 
 ```yaml
-name: "Deploy :rocket:"
+name: Deploy 🚀
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
   release:
     uses: NetaMx/moe-workflows/.github/workflows/release.yml@main
     secrets:
-      github-token: ${{ secrets.DEV_GITHUB_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build-image-dev:
     if: github.event.ref == 'refs/heads/develop'
@@ -39,9 +39,9 @@ jobs:
       dev_env: develop
     secrets:
       ecr_repository: ${{ secrets.ECR_REPOSITORY }}
-      region: ${{ secrets.DEV_AWS_REGION }}
-      aws_access_key_id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+      region: ${{ secrets.AWS_REGION }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy-argocd-dev:
     if: github.event.ref == 'refs/heads/develop'
@@ -51,7 +51,7 @@ jobs:
       dev_env: develop
       branch-name: main
     secrets:
-      github-token: ${{ secrets.DEV_GITHUB_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
       ecr_repository: ${{ secrets.ECR_REPOSITORY }}
 
   slack-message:
