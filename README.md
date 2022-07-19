@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/NetaMx/moe-workflows">
-    <img src="./Logo_Neta_Close.png" alt="Logo" width="150" height="100">
+    <img src="./Neta.png" alt="Logo" width="150" height="100">
   </a>
 
   <h3 align="center">Neta Workflows Configuration</h3>
